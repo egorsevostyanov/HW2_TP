@@ -55,3 +55,31 @@ class Recipe:
 
     def __str__(self):
         return f"{self.title}: {', '.join(str(i) for i in self.ingredients)}"
+    
+class ShoppingList:
+    def __init__(self):
+        self._items = []
+
+    def add_recipe(self, recipe: Recipe, portions: float):
+        if portions <= 0:
+            raise ValueError("Количество порций должно быть положительным")
+        sc = recipe.scale(portions);
+        for i in sc.ingredients:
+            self._items.append((i, recipe.title))
+
+    def remove_recipe(self, title: str):
+        self._items = [i for i in self._items if i[1] != title]
+
+    def get_list(self):
+        mp = {}
+        for i, j in self._items:
+            k = (i.name, i.unit)
+            mp[k] = mp.get(k, 0)+i.quantity
+        ans = [Ingredient(name, quantity, unit) for (name, unit), quantity in mp.items()]
+        ans.sort(key=lambda x: x.name)
+        return ans
+    
+    def __add__(self, other: 'ShoppingList'):
+        list = ShoppingList()
+        list._items = self._items.copy()+other._items.copy()
+        return list
