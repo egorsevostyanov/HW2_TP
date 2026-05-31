@@ -86,7 +86,7 @@ class ShoppingList:
     
 class DietaryRecipe(Recipe):
     def __init__(self, title : str, diet_type : str, ingredients : list = None):
-        super().__init__(title, ingredients)
+        super().__init__(title, ingredients if ingredients is not None else [])
         self.diet_type = diet_type
     
     def scale(self, ratio: float):

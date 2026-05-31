@@ -1,6 +1,6 @@
 import pytest
 
-from hw2 import Ingredient, Recipe, ShoppingList
+from hw2 import DietaryRecipe, Ingredient, Recipe, ShoppingList
 
 def test_ingredient1():
     ing = Ingredient("Мука", 100, "г")
@@ -112,3 +112,7 @@ def test_shoppinglist5():
     assert sl3.get_list() == [Ingredient("a", 500, "г"), Ingredient("b", 1000, "г")]
     assert sl1.get_list() == [Ingredient("a", 200, "г"), Ingredient("b", 400, "г")]
     assert sl2.get_list() == [Ingredient("a", 300, "г"), Ingredient("b", 600, "г")]
+
+def test_dietaryrecipe1():
+    r = DietaryRecipe("c", "d", None)
+    assert r.ingredients == []
