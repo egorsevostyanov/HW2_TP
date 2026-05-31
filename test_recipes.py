@@ -1,6 +1,6 @@
 import pytest
 
-from hw2 import Ingredient, Recipe
+from hw2 import Ingredient, Recipe, ShoppingList
 
 def test_ingredient1():
     ing = Ingredient("Мука", 100, "г")
@@ -65,3 +65,50 @@ def test_recipe6():
     r = Recipe("c", [ing1])
     r.add_ingredient(ing2)
     assert len(r) == 1
+
+def test_shoppinglist1():
+    ing1 = Ingredient("a", 100, "г")
+    ing2 = Ingredient("b", 200, "г")
+    r = Recipe("c", [ing1, ing2])
+    sl = ShoppingList()
+    sl.add_recipe(r, 1)
+    assert sl._items == [(ing1, "c"), (ing2, "c")]
+
+def test_shoppinglist2():
+    ing1 = Ingredient("a", 100, "г")
+    ing2 = Ingredient("b", 200, "г")
+    r = Recipe("c", [ing1, ing2])
+    sl = ShoppingList()
+    with pytest.raises(ValueError):
+        sl.add_recipe(r, -1)
+
+def test_shoppinglist3():
+    ing1 = Ingredient("a", 100, "г")
+    ing2 = Ingredient("b", 200, "г")
+    r = Recipe("c", [ing1, ing2])
+    sl = ShoppingList()
+    sl.add_recipe(r, 2)
+    sl.remove_recipe("d")
+    sl.remove_recipe("c")
+    assert sl._items == []
+
+def test_shoppinglist4():
+    ing1 = Ingredient("a", 100, "г")
+    ing2 = Ingredient("b", 200, "г")
+    r = Recipe("c", [ing1, ing2])
+    sl = ShoppingList()
+    sl.add_recipe(r, 2)
+    assert sl.get_list() == [Ingredient("a", 200, "г"), Ingredient("b", 400, "г")]
+
+def test_shoppinglist5():
+    ing1 = Ingredient("a", 100, "г")
+    ing2 = Ingredient("b", 200, "г")
+    r = Recipe("c", [ing1, ing2])
+    sl1 = ShoppingList()
+    sl2 = ShoppingList()
+    sl1.add_recipe(r, 2)
+    sl2.add_recipe(r, 3)
+    sl3 = sl1 + sl2
+    assert sl3.get_list() == [Ingredient("a", 500, "г"), Ingredient("b", 1000, "г")]
+    assert sl1.get_list() == [Ingredient("a", 200, "г"), Ingredient("b", 400, "г")]
+    assert sl2.get_list() == [Ingredient("a", 300, "г"), Ingredient("b", 600, "г")]
